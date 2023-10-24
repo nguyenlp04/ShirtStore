@@ -1,0 +1,26 @@
+
+.table {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    background-color: #313348; 
+    border-radius: 0.375rem !important;
+    color: #9ca3af; 
+  }
+  
+  .table th,
+  .table td,
+  .table tr {
+    background-color: #313348 !important;
+    padding: 15px !important;
+    color: #9ca3af !important;
+  }
+  
+ 
+
+.table th, .table td {
+    width: 20%;
+    text-align: left; 
+    border-radius: 0.375rem !important;
+    padding: 12px; 
+  }

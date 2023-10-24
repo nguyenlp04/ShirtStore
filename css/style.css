@@ -1,0 +1,350 @@
+Color of the links BEFORE scroll
+.navbar-scroll .nav-link,
+.navbar-scroll .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #262626;
+}
+
+/* Color of the navbar BEFORE scroll */
+.navbar-scroll {
+  background-color: #ffc017;
+}
+
+/* Color of the links AFTER scroll */
+.navbar-scrolled .nav-link,
+.navbar-scrolled .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #262626;
+}
+
+/* Color of the navbar AFTER scroll */
+.navbar-scrolled {
+  background-color: #fff;
+}
+.carousel-control-prev-icon:after,
+.carousel-control-next-icon:after{
+  content: "";
+}
+.products-new .carousel-innerv{
+  position: relative;
+}
+.carousel-control-prev-icon {
+  position: absolute;
+  transform: translate(50%, 50%);
+  left: 0;
+}
+
+.carousel-control-next-icon {
+  position: absolute;
+  transform: translate(-50%, 50%);
+  right: 0;
+}
+
+/* An optional height of the navbar AFTER scroll */
+.navbar.navbar-scroll.navbar-scrolled {
+  padding-top: auto;
+  padding-bottom: auto;
+}
+.navbar-brand {
+  font-size: unset;
+  height: 3.5rem;
+}
+.navbar {
+  margin: auto;
+  box-shadow: none;
+}
+.navbar .container-fluid {
+  width: 90vw;
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+.navbar a i.fas.fa-bell,
+.navbar a i.fa-shopping-cart {
+  font-size: 20px;
+  padding-right: 0.5em;
+}
+.badge-notification {
+  margin-left: -1.7em;
+  margin-top: -0.8em;
+}
+.navbar-nav.me-auto.mb-2.mb-lg-0 {
+  margin: 0 !important;
+}
+form .form-control.me-2 {
+  width: 40vw;
+}
+.navbar-collapse {
+  flex-grow: 0;
+}
+.nav-item-menu {
+  background-color: #f8f9fa;
+  padding: 10px;
+}
+.nav-item-menu li a {
+  font-weight: bold;
+}
+hr {
+  margin: 0;
+  color: #262626;
+}
+.title-container{
+    margin-top: 40px;
+}
+
+.title-container h2 {
+  font: 33px sans-serif;
+  margin: 30px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.title-container h2.background {
+  position: relative;
+  z-index: 1;
+}
+
+.title-container h2.background::before {
+  border-top: 2px solid #eae8e8;
+  content: "";
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 95%;
+  z-index: -1;
+}
+.title-container span {
+  background: #fff;
+  color: #555555;
+  padding: 0 15px;
+}
+section{
+    width: 80vw;
+    margin: auto;
+}
+.card-category{
+  color: black !important;
+    opacity: .7  !important;
+    font-size: .75em !important;
+    margin: 0 !important;
+}
+.about-us{
+    margin-top: 50px;
+    color: #fff;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #195F9D;
+}
+.about-us .content{
+    width: 50%;
+    margin: 30px;
+}
+.about-us .img{
+    width: 50%;
+    margin: 30px;
+}
+.about-us .img img {
+    width: 580px;
+    display: inline-block;
+    max-width: 100%;
+    overflow: clip;
+    border: 10px solid white;
+}
+.card-title{
+    margin: 10px 0;
+    font-size: 1.125em;
+    font-weight: bold;
+}
+.bestsellers .container{
+  margin-top: 50px;
+}
+.bestsellers .card-body{
+    padding: 0;
+}
+.bestsellers .card{
+  border: none;
+  box-shadow: none;
+}
+.policy{
+    margin-top: 50px;
+}
+.container-card-policy h4{
+    font-weight: bold;
+    padding: 10px;
+}
+
+.height-100{
+    height:100vh;
+}
+.review .container{
+  margin-top: 50px;
+}
+
+.review .ratings{
+    margin-right:10px;
+}
+
+.review .ratings i{
+    
+    color:#cecece;
+    font-size:20px;
+}
+
+.review .rating-color{
+    color:#fbc634 !important;
+}
+
+.review .review-count{
+    font-weight:400;
+    margin-bottom:2px;
+    font-size:24px !important;
+}
+
+.review .small-ratings i{
+  color:#cecece;   
+}
+
+.review .review-stat{
+    font-weight:300;
+    font-size:18px;
+    margin-bottom:2px;
+}
+.review .card-body{
+  padding-top: 0;
+}
+.review .card-title{
+  margin-top: 0;
+}
+.review .card{
+  box-shadow: none;
+  border: none;
+}
+.review .description{
+  margin-bottom: 10px;
+}
+.review p {
+  margin: 0;
+  box-shadow: none;
+}
+.review .review-count{
+  margin-bottom: 40px;
+}
+.mt-3.footer{
+  margin-top: 90px !important;
+  position: fixed;
+}
+
+
+.new{
+  margin: 0;
+}
+.news .wrapper {
+  width: 100%;
+  margin: 50px auto;
+}
+.news .wrapper .title-container{
+  margin-top: 50px;
+}
+.news button{
+      margin-top: 20px !important;
+}
+.bestsellers button{
+  margin-top: 10px !important;
+}
+.news .wrapper .card {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  height: calc(100% - 0px);
+  border: 1px solid #ddd;
+}
+.news .wrapper .card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: 0 center;
+}
+.news .wrapper .card h3 {
+  padding: 10px 0;
+  font-size: 25px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.news .wrapper .card p {
+  color: #555;
+  font-size: 14px;
+}
+.news .wrapper .card .card-footer {
+  background: transparent;
+  border: 0;
+  padding: 1rem;
+  padding-bottom: 2rem;
+}
+.news .wrapper .card .btn {
+  padding: 10px 35px;
+}
+
+.description-post{
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+}
+.title-post , .name-products{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 0 !important;
+  margin-bottom: 10px;
+}
+.information .img-user-post{
+  width: 50px !important;
+  margin: 0 !important;
+  height: 50px !important;
+}
+.name-date-post{
+  margin-left: 16px;
+}
+.card-body .discount{
+  color: #4f4f4f;
+  margin: 0;
+}
+.container-card-products .gia{
+  color: #dc4c64;
+  font-weight: bold;
+  font-size: 18px;
+}
+.container-card-products .card-img-top{
+  max-height: 286px;
+  height: 286px;
+}
+.container-card-products .name-products{
+  color: black !important;
+  height: 50px;
+  max-height: 50px;
+}
+.price{
+  margin-bottom: 16px;
+}
+.btn-all-products{
+  margin-top: 20px !important;
+}
+.pathPage{
+  color: #222;
+  font-weight: 700;
+  letter-spacing: 0;
+  padding: 0;
+  line-height: 1.2;
+}
+span.pagination-button.page-num{
+  color:  #0d6efd;
+}
+span.pagination-button.page-num.active {
+  background-color: #0d6efd;
+  color: white;
+}
