@@ -1,5 +1,5 @@
 <?php
-include '../classes/classes.php';
+include '../models/classes.php';
 include "../layout.php";
 ini_set('display_errors', 1);
 error_reporting(E_ALL);

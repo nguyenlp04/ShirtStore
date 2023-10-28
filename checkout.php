@@ -5,53 +5,24 @@ include "layout.php";
 include './process_send_mail.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
-if (!isset($_SESSION['totalPrice'])) {
-    $totalPrice = 0;
-} else {
-    $totalPrice = $_SESSION['totalPrice'];
-}
-if (!isset($_SESSION['discount'])) {
-    $discount = 0;
-} else {
-    $discount = $_SESSION['discount'];
-}
-if (!isset($_SESSION['tax'])) {
-    $tax = 0;
-} else {
-    $tax = $_SESSION['tax'];
-}
-
-if (!isset($_SESSION['fullname'])) {
-    $fullname = "";
-} else {
-    $fullname = $_SESSION['fullname'];
-}
-
-
-if (isset($_SESSION['id_customer'])) {
-    $hiddenAuth = "none";
-} else {
-    $hiddenAuth = "block";
-}
-
-
+$totalPrice = isset($_SESSION['totalPrice']) ? $_SESSION['totalPrice'] : 0;
+$discount = isset($_SESSION['discount']) ? $_SESSION['discount'] : 0;
+$tax = isset($_SESSION['tax']) ? $_SESSION['tax'] : 0;
+$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : "";
+$hiddenAuth = isset($_SESSION['id_customer']) ? "none" : "block";
 // Các giá vận chuyển tương ứng với mỗi lựa chọn radio
 $shippingPrices = array(
     'Chuyển phát nhanh' => 14.00,
     'Bưu điện' => 10.00,
     'Tự nhận' => 0.00
 );
-
 $totalPayment = $_SESSION['totalPayment'];
-if (isset($_SESSION['cart'])) {
-    $totalPayment = intval(number_format((($totalPayment + ($totalPayment * $tax / 100)) - $discount), 2));
-} else {
+if (!isset($_SESSION['cart'])) {
     $totalPayment = 0;
-}
+} 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['inputHiddenShipping'])) {
+    $inputHiddenShippingValue = 0;
     $inputHiddenShippingValue = $_POST['inputHiddenShipping'];
-
     $_SESSION['inputHiddenShippingValue'] = $inputHiddenShippingValue;
 }
 $paymentSuccess = false;
@@ -61,7 +32,7 @@ if (isset($_POST['addToCart'])) {
     if (isset($_SESSION['id_customer'])) {
         $id_customer = $_SESSION['id_customer'];
     } else {
-        $id_customer = "";
+        $id_customer = 0;
     }
     $customer_fullname = $_POST['customer_fullname'];
     $customer_phone = $_POST['customer_phone'];
@@ -77,7 +48,6 @@ if (isset($_POST['addToCart'])) {
     $payment_date = date('Y-m-d');
     $payment_status = "Thành công";
     $order_notes = $_POST['order_notes'];
-
     if ($shipping_method == 'Tự nhận') {
         $customer_address = "";
         $country = "";
@@ -86,7 +56,7 @@ if (isset($_POST['addToCart'])) {
         $wards = "";
         $detaileAddress = "";
     } else if (
-        empty($_POST['customer_fullname']) || empty($_POST['customer_phone']) || empty($_POST['customer_email']) ||
+        $_POST['customer_fullname'] == "" || empty($_POST['customer_phone']) || empty($_POST['customer_email']) ||
         empty($_POST['country']) || empty($_POST['city']) || empty($_POST['district']) ||
         empty($_POST['wards']) || empty($_POST['detaileAddress']) || empty($_POST['radidoShip']) ||
         empty($_POST['inputHiddenPaymentAmount'])
@@ -95,12 +65,10 @@ if (isset($_POST['addToCart'])) {
     } else {
     }
     if ($paymentFailure == false) {
-
         $sql = "INSERT INTO `order_payments` (`customer_id`,`customer_fullname`,`customer_phone`,`customer_email`,`customer_address`,`payment_amount`,`payment_date`,`shipping_method`,`payment_status`, `order_notes`) 
         VALUES('$id_customer', '$customer_fullname','$customer_phone','$customer_email', '$customer_address', '$payment_amount', '$payment_date', '$shipping_method', '$payment_status', '$order_notes')";
         $old = mysqli_query($conn, $sql);
         $paymentSuccess = true;
-
         $subject = 'Xác Nhận Đặt Hàng';
         $message_products = "";
         $tottalprice = 0;
@@ -122,11 +90,9 @@ if (isset($_POST['addToCart'])) {
         send_email($customer_email, $subject, $message, $customer_fullname);
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -160,22 +126,15 @@ if (isset($_POST['addToCart'])) {
         }
     </style>
 </head>
-
 <body>
-     
 <?php menu() ?>
-
     <section class="h-100 h-custom py-5 ">
-
         <div class="col">
             <div class="">
                 <div class="card-body p-4">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST" enctype="multipart/form-data">
-
                         <div class="row">
-
                             <div class="col-lg-8 ">
-
                                 <div style="display: <?php echo $hiddenAuth ?>" class="card mb-4 border shadow-0">
                                     <div class="card p-4 d-flex justify-content-between">
                                         <div class="d-block">
@@ -188,7 +147,6 @@ if (isset($_POST['addToCart'])) {
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Checkout -->
                                 <div class="card  border">
                                     <div class="p-4">
@@ -210,7 +168,7 @@ if (isset($_POST['addToCart'])) {
                                             <div class="col-6 mb-3">
                                                 <p class="mb-0">Số điện thoại</p>
                                                 <div class="">
-                                                    <input name="customer_phone" type="tel" id="typePhone" value="+84 " class="form-control " />
+                                                    <input name="customer_phone" type="tel" id="typePhone" value="+84 "  class="form-control " />
                                                 </div>
                                             </div>
 
@@ -221,11 +179,8 @@ if (isset($_POST['addToCart'])) {
                                                 </div>
                                             </div>
                                         </div>
-
                                         <hr class="my-4" />
-
                                         <h5 class="card-title mb-3">Thông tin vận chuyển</h5>
-
                                         <div class="row mb-3">
                                             <div class="col-lg-4 mb-3">
                                                 <!-- Default checked radio -->
@@ -273,29 +228,18 @@ if (isset($_POST['addToCart'])) {
                                             </div>
                                             <div class="col-sm-4 mb-3">
                                                 <p class="mb-0">Thành phố</p>
-                                                <!-- <select name="city" class="form-select">
-                                                    <option value="1">New York</option>
-                                                    <option value="2">Moscow</option>
-                                                    <option value="3">Samarqand</option>
-                                                </select> -->
                                                 <select id="city" name="city" class="form-select">
                                                     <option value="" selected>Chọn tỉnh thành</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-4 mb-3">
                                                 <p class="mb-0">Quận/Huyện</p>
-                                                <!-- <div class="">
-                                                    <input name="district" type="text" id="typeText" placeholder="Quận/Huyện" class="form-control " />
-                                                </div> -->
                                                 <select id="district" name="district" class="form-select">
                                                     <option value="" selected>Chọn quận huyện</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-4 col-6 mb-3">
                                                 <p class="mb-0">Phường/Xã</p>
-                                                <!-- <div class="">
-                                                    <input name="wards" type="text" id="typeText" placeholder="Phường/Xã" class="form-control " />
-                                                </div> -->
                                                 <select id="ward" name="wards" class="form-select">
                                                     <option value="" selected>Chọn phường xã</option>
                                                 </select>
@@ -306,8 +250,6 @@ if (isset($_POST['addToCart'])) {
                                                     <input name="detaileAddress" type="text" id="typeText" placeholder="Địa chỉ chi tiết" class="form-control " />
                                                 </div>
                                             </div>
-
-
                                         </div>
                                         <div class="form-check mb-3">
                                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" />
@@ -316,7 +258,7 @@ if (isset($_POST['addToCart'])) {
                                         <div class="mb-3">
                                             <p class="mb-0">Ghi chú đơn hàng (không bắt buộc)</p>
                                             <div class="">
-                                                <textarea name="order_notes" class="form-control " id="textAreaExample1" rows="2"></textarea>
+                                                <textarea name="order_notes" class="form-control " id="textAreaExample1" rows="4"></textarea>
                                             </div>
                                         </div>
                                         <div class="float-end">
@@ -336,16 +278,13 @@ if (isset($_POST['addToCart'])) {
                                         <strong>
                                             <p class="mb-2">$<?php echo $totalPrice ?></p>
                                             <input type="hidden" id="inputHiddenTotalPrice" name="inputHiddenTotalPrice" value="<?php echo $totalPrice ?>">
-
                                         </strong>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <p class="mb-2">Giảm giá:</p>
                                         <strong>
-
                                             <p class="mb-2 text-danger">- $<span id="discountAmount"><?php echo $discount ?></span></p>
                                             <input type="hidden" id="inputHiddenDiscount" name="inputHiddenDiscount" value="<?php echo $discount ?>">
-
                                         </strong>
                                     </div>
                                     <div class="d-flex justify-content-between">
@@ -355,7 +294,6 @@ if (isset($_POST['addToCart'])) {
                                         </strong>
                                         <input type="hidden" id="inputHiddenShipping" name="inputHiddenShipping" value="12">
                                     </div>
-
                                     <div class="d-flex justify-content-between">
                                         <p class="mb-2">Thuế:</p>
                                         <strong>
@@ -376,7 +314,6 @@ if (isset($_POST['addToCart'])) {
                                     </div>
                                     <hr />
                                     <h6 class="text-dark my-4">Các sản phẩm trong giỏ hàng</h6>
-
                                     <?php
                                     if (isset($_SESSION['cart'])) {
                                         foreach ($_SESSION['cart'] as $product) {
@@ -408,79 +345,73 @@ if (isset($_POST['addToCart'])) {
         </div>
     </section>
   <?php footer() ?>
-      
     <script>
         let couponApplied = false;
-
         document.querySelector(".apply-coupon").addEventListener('click', function(event) {
-            event.preventDefault();
-            const listCoupon = {
-                <?php
-                $query = "SELECT * FROM coupons";
-                $resultShow = mysqli_query($conn, $query);
-                while ($row = mysqli_fetch_assoc($resultShow)) {
-                    echo "'" . $row['name_coupon'] . "' : " . $row['discount_coupon'] . ",";
-                }
-                ?>
-            };
-            const inputCoupon = document.getElementById("inputCoupon").value;
-
-            if (couponApplied) {
-                alert('Bạn đã áp dụng mã giảm giá rồi.');
-                return;
-            }
-            // Lưu trữ giá trị mã giảm giá vào biến couponDiscount
-            let couponDiscount = 0;
-            for (const coupon in listCoupon) {
-                if (inputCoupon === coupon) {
-                    couponDiscount = listCoupon[coupon];
-                    break; // Dừng khi tìm thấy mã giảm giá
-                }
-            }
-
-            let priceTotal = parseFloat(document.getElementById('inputHiddenTotalPrice').value);
-            const inputHiddenDiscount = parseFloat(document.getElementById('inputHiddenDiscount').value);
-            console.log(inputHiddenDiscount);
-
-            // Tính toán giảm giá
-            const discountAmount = priceTotal * (couponDiscount / 100);
-            // const totalDiscount = discountAmount + inputHiddenDiscount;
-            const totalDiscount = discountAmount;
-
-            ship = document.getElementById('inputHiddenShipping').value;
-            const finalPrice = priceTotal - totalDiscount
-            const totalPayment = finalPrice + (finalPrice * <?php echo $tax / 100 ?>)  + parseInt(ship);
-
-            // Cập nhật giảm giá và tổng thanh toán
-            document.getElementById('discountAmount').innerHTML = `$${(discountAmount + inputHiddenDiscount).toFixed(2)}`;
-            document.getElementById('discountAmount').textContent = (totalDiscount).toFixed(2);
-            document.getElementById('inputHiddenDiscount').value = totalDiscount;
-            document.getElementById('inputHiddenPaymentAmount').value = totalPayment.toFixed(2);
-            document.getElementById('totalPayment').innerHTML = `$${totalPayment.toFixed(2)}`;
-
-            couponApplied = true;
-            // Vô hiệu hóa ô nhập mã giảm giá
-            document.getElementById("inputCoupon").setAttribute("disabled", "true");
-
-        });
-
+    event.preventDefault();
+    const listCoupon = {
+        <?php
+        $query = "SELECT * FROM coupons";
+        $resultShow = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($resultShow)) {
+            echo "'" . $row['name_coupon'] . "' : " . $row['discount_coupon'] . ",";
+        }
+        ?>
+    };
+    const inputCoupon = document.getElementById("inputCoupon").value;
+    if (inputCoupon.trim() === '') {
+        alert('Vui lòng nhập mã giảm giá.');
+        return; // Dừng tính toán nếu không có mã giảm giá
+    }
+    if (!listCoupon[inputCoupon]) {
+        alert('Mã giảm giá không hợp lệ.');
+        return; // Dừng tính toán nếu mã giảm giá không hợp lệ
+    }
+    // Lưu trữ giá trị mã giảm giá vào biến couponDiscount
+    let couponDiscount = 0;
+    for (const coupon in listCoupon) {
+        if (inputCoupon === coupon) {
+            couponDiscount = listCoupon[coupon];
+            console.log(listCoupon[coupon]);
+            break; // Dừng khi tìm thấy mã giảm giá
+        } 
+    }
+    let priceTotal = parseFloat(document.getElementById('inputHiddenTotalPrice').value);
+    const inputHiddenDiscount = parseFloat(document.getElementById('inputHiddenDiscount').value);
+    // Tính toán giảm giá
+    const discountAmount = priceTotal * (couponDiscount / 100);
+    // const totalDiscount = discountAmount + inputHiddenDiscount;
+    const totalDiscount = discountAmount;
+    ship = document.getElementById('inputHiddenShipping').value;
+    const finalPrice = priceTotal - totalDiscount
+    const totalPayment = finalPrice + (finalPrice * <?php echo $tax / 100 ?>)  + parseInt(ship);
+    // Cập nhật giảm giá và tổng thanh toán
+    document.getElementById('discountAmount').innerHTML = `$${(discountAmount + inputHiddenDiscount).toFixed(2)}`;
+    document.getElementById('discountAmount').textContent = (totalDiscount).toFixed(2);
+    document.getElementById('inputHiddenDiscount').value = totalDiscount;
+    document.getElementById('inputHiddenPaymentAmount').value = totalPayment.toFixed(2);
+    document.getElementById('totalPayment').innerHTML = `$${totalPayment.toFixed(2)}`;
+    couponApplied = true;
+    // document.getElementById("inputCoupon").setAttribute("disabled", "true");
+});
         var shippingPrices = {
             'Chuyển phát nhanh': 12.00,
             'Bưu điện': 10.00,
             'Tự nhận': 0.00
         };
-
         function updateShippingPrice(value) {
             if (value == 'Tự nhận') {
                 document.getElementById('hiddenAddress').style.display = 'none';
             } else {
                 document.getElementById('hiddenAddress').style.display = 'flex';
             }
-
-            const ship = shippingPrices[value] || 0;
+            var ship = shippingPrices[value] || 0;
+            const totalPrice = parseFloat(document.getElementById('inputHiddenTotalPrice').value);
+            if(totalPrice >= 99){
+                ship = 0;
+            }
             document.getElementById('shippingPrice').innerHTML = `$${ship}`;
             document.getElementById('inputHiddenShipping').value = ship;
-            const totalPrice = parseFloat(document.getElementById('inputHiddenTotalPrice').value);
             const discount = parseFloat(document.getElementById('inputHiddenDiscount').value);
             const tax = parseFloat(<?php echo $tax; ?>);
             const totalPayment = ((totalPrice + (totalPrice * tax / 100) + ship) - discount).toFixed(2);
@@ -490,7 +421,6 @@ if (isset($_POST['addToCart'])) {
         window.addEventListener('load', (event) => {
             updateShippingPrice('Chuyển phát nhanh');
         });
-
         const radioButtons = document.getElementsByName('radidoShip');
         for (const radioButton of radioButtons) {
             radioButton.addEventListener('change', (event) => {
@@ -502,5 +432,4 @@ if (isset($_POST['addToCart'])) {
     <script src="./js/search.js"></script>
     <script src="./js/all_products.js"></script>
 </body>
-
 </html>

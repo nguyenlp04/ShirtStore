@@ -1,13 +1,10 @@
 <?php 
 session_start();
 include "config/config.php";
-
 ini_set('display_errors', 1); error_reporting(E_ALL);
 if(!isset($_SESSION['username'])){
     $rowGet['avatar'] = "";
 } 
-
-
 if(isset($_SESSION['username'])){
     $userLogin = $_SESSION['username'];
     $sql = "SELECT * FROM customer WHERE username='$userLogin'";
@@ -29,10 +26,13 @@ if(isset($_SESSION['username'])){
     $hiddenLogin = "flex";
     $hiddenUser = "none";
 }
-
-
-
-
+$totalProducts = 0;
+if (isset($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $product) {
+        $totalProducts += $product['quantity'];
+    }
+    $_SESSION['totalProducts'] =  $totalProducts;
+}
 function navDashboard(){
     global $rowGet;
     echo '<nav class="navbar navbar-expand-md">
@@ -83,7 +83,6 @@ function navDashboard(){
     </div>
 </nav>';
 }
-
 function sidebarDashboar(){
     global $rowGet;
     echo '<aside class="sidebar position-fixed top-0 left-0 overflow-auto h-100 float-left" id="show-side-navigation1">
@@ -150,7 +149,7 @@ function sidebarDashboar(){
     </aside>';
 }
 function menu() {
-    global $hiddenLogin, $hiddenUser, $rowGet, $adminMenuItem, $conn;
+    global $hiddenLogin, $hiddenUser, $rowGet, $adminMenuItem, $totalProducts, $conn;
     echo '<nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- Container wrapper -->
         <div class="container-fluid">
@@ -199,23 +198,24 @@ function menu() {
                 <!-- Icon -->
                 <a class="text-reset me-3" href="cart.php">
                     <i class="fas fa-shopping-cart"></i>
+                    <span class="badge rounded-pill badge-notification bg-danger">'.$totalProducts.'</span>
                 </a>
                 <!-- Notifications -->
                 <div class="dropdown">
                     <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="" id="navbarDropdownMenuLink"
                         role="button" data-mdb-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-bell"></i>
-                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                        <span class="badge rounded-pill badge-notification bg-danger">3</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="#">Some news</a>
+                            <a class="dropdown-item" href="#">Đang cập nhật</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Another news</a>
+                            <a class="dropdown-item" href="#">Đang cập nhật</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="#">Đang cập nhật</a>
                         </li>
                     </ul>
                 </div>
@@ -253,22 +253,22 @@ function menu() {
             <a class="nav-link" href="all-products.php">Tất cả sản phẩm</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="t-shirt.php">Áo thun</a>
+            <a class="nav-link" href="category.php?id_category=13">Áo thun</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="hoodie.php">Hoodie</a>
+            <a class="nav-link" href="category.php?id_category=14">Áo hoodie</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="graphic-tee.php">Áo thun hình in</a>
+            <a class="nav-link" href="category.php?id_category=15">Áo thun in hình</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href=" ">Chính sách hoàn trả và hoàn tiền</a>
+            <a class="nav-link" href="return.php">Chính sách hoàn trả</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href=" ">Chính sách vận chuyển</a>
+            <a class="nav-link" href="shipping.php">Chính sách vận chuyển</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href=" ">Liên hệ chúng tôi</a>
+            <a class="nav-link" href="contact.php">Liên hệ chúng tôi</a>
         </li>
     </ul>';
 } 
@@ -300,7 +300,7 @@ function footer(){
                         <a href="#!" class="text-reset">T-Shirt</a>
                     </p>
                     <p>
-                        <a href="#!" class="text-reset">Hoodie</a>
+                        <a href="#!" class="text-reset">Áo hoodie</a>
                     </p>
                     <p>
                         <a href="#!" class="text-reset">Graphic</a>
@@ -354,57 +354,4 @@ function footer(){
     <!-- Copyright -->
     </footer>';
 }
-
-
-// function changePassword(){
-// $addSuccess = "none";
-// $addFailure = "none";
-// $resultPass = "";
-// $resultCfPass = "";
-// $usernameProfile = $_SESSION['username'];
-//     global $conn, $sql; 
-//     $usernameProfile = $_SESSION['username'];
-//     $user = $usernameProfile;
-    
-//     $pass = $_POST["pass"];
-//     $passNew = $_POST["passNew"];
-//     $cfpassNew = $_POST["cfpassNew"];
-//     $sqlChangePass = "SELECT * FROM customer WHERE username='$usernameProfile'";
-//     $resultChangePass = $conn->query($sqlChangePass);
-//     if ($resultChangePass->num_rows > 0) {
-//         $row = $resultChangePass->fetch_assoc();
-//     } else {
-//         echo "Không tìm thấy dữ liệu";
-//         exit;
-//     }
-
-//     if (isset($_POST["pass"])) {
-//         if ($pass === "" || $row['password'] != $pass) {
-//             $resultPass = "border-danger";
-//         } else {
-//             $resultPass = "";
-//         }
-//     }
-
-//     if (isset($_POST["passNew"])) {
-//         if ($passNew != $cfpassNew || $passNew === "") {
-//             $resultCfPass = "border-danger";
-//         } else {
-//             $resultCfPass = "";
-//         }
-//     }
-//     if ($resultPass == "" && $resultCfPass == "") {
-//         $sqlChangePass = "UPDATE customer SET password ='$passNew' WHERE username='$usernameProfile'";
-//         $oldChangePass = mysqli_query($conn, $sqlChangePass);
-//         if ($conn->query($sqlChangePass) === TRUE) {
-//             $addSuccess = "block";
-//         } else {
-//             echo "Lỗi: " . $sql . "<br>" . $conn->error;
-//             $addFailure = "block";
-//         }
-//     } else {
-//         $addFailure = true;
-
-//     }
-// }
 ?>

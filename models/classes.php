@@ -256,12 +256,12 @@ class AddHandler
         }
         $resultName = $nameProduct == "" ? "border-danger" : "";
         $resultPrice = $priceProduct == "" ? "border-danger" : "";
-        $resultDiscount = $discountPriceProduct == "" ? "border-danger" : "";
+        // $resultDiscount = $discountPriceProduct == "" ? "border-danger" : "";
+        if ($discountPriceProduct == '') {
+            $discountPriceProduct = 0;
+        }
+        
         $resultDate = $dateProduct == "" ? "border-danger" : "";
-
-
-
-
         $target_dir = "../img/imgProducts/";
         $target_file = $target_dir . $path;
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
@@ -660,6 +660,8 @@ class RenderHandler
         }
         return $data;
     }
+
+    
 }
 
 
@@ -681,12 +683,28 @@ class ChangeInfoHandler
         $usernameProfile = $_SESSION['username'];
         $fullname = $_POST["fullname"];
         $email = $_POST["email"];
-
+        $userPost = $_SESSION['username'];
+        $img = $_FILES["fileToUpload"];
+        $fileName = $img["name"];
+        $id_customer = $_POST["id_customer"];
+        $path = "";
+        if ($fileName != "") {
+            $path = $userPost . basename($_FILES['fileToUpload']['name']);
+        } else {
+            $query = "SELECT * FROM products WHERE id_customer='$id_customer'";
+            $resultAvt = mysqli_query($conn, $query);
+            $row = mysqli_fetch_assoc($resultAvt);
+            $path = $row['avatar'];
+        }
+        $target_dir = "../img/avatarUser/";
+        $target_file = $target_dir . $path;
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        }
+        $avatarUser = '/' . $path;
         $resultFullname = $fullname === "" ? "border-danger" : "";
         $resultEmail = $email === "" ? "border-danger" : "";
-
         if ($resultFullname == "" && $resultEmail == "") {
-            $sql = "UPDATE customer SET fullname='$fullname', email='$email' WHERE username='$usernameProfile'";
+            $sql = "UPDATE customer SET fullname='$fullname', email='$email', avatar ='$avatarUser' WHERE username='$usernameProfile'";
             mysqli_query($conn, $sql);
             $changeInfoSuccess = true;
         } else {
@@ -730,3 +748,4 @@ class ChangeInfoHandler
         }
     }
 }
+

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../classes/classes.php';
+include '../models/classes.php';
 if(!isset($_SESSION['admin']) || $_SESSION['vai_tro'] === "user"){
     header("Location: ../index.php");
 } 

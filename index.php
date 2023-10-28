@@ -1,25 +1,9 @@
 <?php
-include './classes/classes.php';
+include './models/classes.php';
 include "./config/config.php";
 include "layout.php";
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-if (isset($_SESSION['username'])) {
-    $userLogin = $_SESSION['username'];
-    $sql = "SELECT * FROM customer WHERE username='$userLogin'";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-    } else {
-        echo "Không tìm thấy dữ liệu";
-        exit;
-    }
-    $hiddenLogin = "none";
-    $hiddenUser = "flex";
-} else {
-    $hiddenLogin = "flex";
-    $hiddenUser = "none";
-}
 
 ?>
 <!doctype html>
@@ -123,8 +107,8 @@ if (isset($_SESSION['username'])) {
                     <h2>Về chúng tôi</h2>
                 </div>
                 <div class="description">
-                    <p>Mặt tiền cửa hàng của chúng tôi mang đến một môi trường thân thiện và đầy cảm hứng để khách hàng khám phá bộ sưu tập áp phích phong phú của chúng tôi. 
-                        Từ phong cảnh ngoạn mục và cảnh quan thành phố quyến rũ đến tác phẩm nghệ thuật độc đáo và thiết kế kích thích tư duy, 
+                    <p>Mặt tiền cửa hàng của chúng tôi mang đến một môi trường thân thiện và đầy cảm hứng để khách hàng khám phá bộ sưu tập áp phích phong phú của chúng tôi.
+                        Từ phong cảnh ngoạn mục và cảnh quan thành phố quyến rũ đến tác phẩm nghệ thuật độc đáo và thiết kế kích thích tư duy,
                         chúng tôi cung cấp nhiều lựa chọn đa dạng để phù hợp với nhiều sở thích và phong cách khác nhau.
                         Đội ngũ nhân viên am hiểu và thân thiện của chúng tôi luôn sẵn sàng hỗ trợ khách hàng tìm kiếm sản phẩm hoàn hảo hoặc trả lời bất kỳ câu hỏi nào họ có thể có.
                     </p>
@@ -147,19 +131,21 @@ if (isset($_SESSION['username'])) {
                         break;
                     }
                     echo "<div class='col-3 container-card-products'>";
+                    echo "<a href='category.php?id_category=".$rowCategory['id_category'] ."' class='text-decoration-none'>";
                     echo "    <div class='card text-center' style='width: 18rem;'>";
                     echo "        <img src='./img/imgCategory" . $rowCategory['img'] . "' class='card-img-top' alt=''>";
                     echo "        <div class='card-body'>";
                     echo "            <h4 class='d-flex justify-content-center card-title'>" . $rowCategory['title'] . "</h4>";
                     echo "        </div>";
                     echo "    </div>";
+                    echo "<a>";
                     echo "</div>";
                     $categoryCounter++;
                 }
                 ?>
             </div>
             <button type="button" class="m-auto d-flex justify-content-center btn btn-primary btn-sm fw-bold p-2">
-                <a class="text-white text-decoration-none" href="">Xem tất cả sản phẩm</a>
+                <a class="text-white text-decoration-none" href="all-products.php">Xem tất cả sản phẩm</a>
             </button>
         </div>
 
@@ -220,37 +206,7 @@ if (isset($_SESSION['username'])) {
 
 
 
-        <!-- <div class="policy">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col">
-                        <div class="container-card-policy">
-                            <img src="./img/ship.png" style="width: 150px;" class="card-img-top" alt="./img/ship.png">
-                            <h4 class="title-policy">FREESHIPPING FOR ALL ORDERS OVER $100</h4>
-                            <p class="text-policy">When you place an order over $100, we’ll give you a 10% discount
-                                and freeshipping!</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="container-card-policy">
-                            <img src="./img/order.png" style="width: 150px;" class="card-img-top" alt="./img/order.png">
-                            <h4 class="title-policy">SECURE AND EASY CHECKOUT</h4>
-                            <p class="text-policy">Your payment information is secured by trusted payment gateways!
-                                You can use your credit card to pay without payment gateways accounts!
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="container-card-policy">
-                            <img src="./img/return.png" style="width: 150px;" class="card-img-top" alt="./img/return.png">
-                            <h4 class="title-policy">RETURN AND REFUND</h4>
-                            <p class="text-policy">Free return and refund within 30 days!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+        
         <section class="news">
             <div class="wrapper m-0">
                 <div class="container text-center title-container">

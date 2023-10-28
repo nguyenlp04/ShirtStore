@@ -33,7 +33,9 @@ Color of the links BEFORE scroll
   transform: translate(50%, 50%);
   left: 0;
 }
-
+.carousel-control-next, .carousel-control-prev {
+  width: 5%;
+}
 .carousel-control-next-icon {
   position: absolute;
   transform: translate(-50%, 50%);

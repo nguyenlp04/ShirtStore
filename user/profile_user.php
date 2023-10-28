@@ -1,5 +1,5 @@
 <?php
-include '../classes/classes.php';
+include '../models/classes.php';
 include "../layout.php";
 
 ini_set('display_errors', 1);
@@ -7,6 +7,9 @@ error_reporting(E_ALL);
 
 if (!isset($_SESSION['username'])) {
     header("Location: ../index.php");
+}
+if (!isset($_SESSION['username'])) {
+    $row['avatar'] = "";
 }
 $resultFullname = "";
 $resultPass = "";
@@ -17,19 +20,11 @@ $changePassSuccess = false;
 $changePassFailure = false;
 $usernameProfile = $_SESSION['username'];
 $user = $usernameProfile;
-if (!isset($_SESSION['username'])) {
-    $row['avatar'] = "";
-}
-
-
-
 
 if (isset($_POST['submit'])) {
     $change = new  ChangeInfoHandler();
     $changeInfo = $change->changeInfo();
 }
-
-
 
 if (isset($_POST['submitChangePass'])) {
     $change = new  ChangeInfoHandler();
@@ -44,15 +39,18 @@ if (isset($_SESSION['username'])) {
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        if ($row['roles'] == 'admin') {
+            $adminMenuItem = '<li><a class="dropdown-item" href="../admin/dashboard.php">Quản trị</a></li>';
+        } else {
+            $adminMenuItem = '';
+        }
     } else {
         echo "Không tìm thấy dữ liệu";
         exit;
     }
-    $hiddenLogin = "none";
-    $hiddenUser = "flex";
-} else {
-    $hiddenLogin = "flex";
-    $hiddenUser = "none";
+} 
+if (!isset($_SESSION['totalProducts'])) {
+    $_SESSION['totalProducts'] = 0;
 }
 ?>
 <!DOCTYPE html>
@@ -111,31 +109,28 @@ if (isset($_SESSION['username'])) {
                 </div>
             </form>
             <!-- Collapsible wrapper -->
-            <div class="group-login align-items-center" style="display: <?php echo $hiddenLogin ?>">
-                <a class="btn btn-primary me-2" href="auth/login.php" role="button">Đăng Nhập</a>
-                <a class="btn btn-primary" href="auth/sign-up.php" role="button">Đăng Ký</a>
-            </div>
             <!-- Right elements -->
             <div class="group-login align-items-center" style="display: <?php echo $hiddenUser ?>">
                 <!-- Icon -->
                 <a class="text-reset me-3" href="../cart.php">
                     <i class="fas fa-shopping-cart"></i>
+                    <span class="badge rounded-pill badge-notification bg-danger"><?php echo $_SESSION['totalProducts'] ?></span>
                 </a>
                 <!-- Notifications -->
                 <div class="dropdown">
                     <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-bell"></i>
-                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                        <span class="badge rounded-pill badge-notification bg-danger">3</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="#">Some news</a>
+                            <a class="dropdown-item" href="#">Đang cập nhật</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Another news</a>
+                            <a class="dropdown-item" href="#">Đang cập nhật</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="#">Đang cập nhật</a>
                         </li>
                     </ul>
                 </div>
@@ -145,6 +140,7 @@ if (isset($_SESSION['username'])) {
                         <img src="../img/avatarUser<?php echo $row['avatar'] ?>" class="rounded-circle" height="35" alt="Black and White Portrait of a Man" loading="lazy" />
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                        <?php echo $adminMenuItem ?>
                         <li>
                             <a class="dropdown-item" href="#">My profile</a>
                         </li>
@@ -170,30 +166,25 @@ if (isset($_SESSION['username'])) {
             <a class="nav-link" href="../all-products.php">Tất cả sản phẩm</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="../t-shirt.php">Áo thun</a>
+            <a class="nav-link" href="../category.php?id_category=13">Áo thun</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="../hoodie.php">Hoodie</a>
+            <a class="nav-link" href="../category.php?id_category=14">Áo hoodie</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="../graphic-tee.php">Áo thun hình in</a>
+            <a class="nav-link" href="../category.php?id_category=15">Áo thun in hình</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href=" ">Chính sách hoàn trả và hoàn tiền</a>
+            <a class="nav-link" href="../return.php">Chính sách hoàn trả</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href=" ">Chính sách vận chuyển</a>
+            <a class="nav-link" href="../shipping.php">Chính sách vận chuyển</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href=" ">Liên hệ chúng tôi</a>
+            <a class="nav-link" href="../contact.php">Liên hệ chúng tôi</a>
         </li>
-    </ul>
-
-
-
+    </ul>'
     <section id="wrapper-admin" class="p-4 w-100">
-
-
         <!-- tab-pills -->
         <div class="container d-flex justify-content-center ">
             <div class="row d-block">

@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "../layout.php";
-include '../classes/classes.php';
+include '../models/classes.php';
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);

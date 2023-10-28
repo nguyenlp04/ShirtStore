@@ -4,26 +4,26 @@ include '../config/config.php';
 include '../process_send_mail.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
+$resultEmail = "";
+$textWarning = "";
 if (isset($_POST['submit'])) {
+
+  $query = "SELECT * FROM customer";
+  $resultGetEmail = mysqli_query($conn, $query);
+  $row = mysqli_fetch_assoc($resultGetEmail);
   $emailForgot = $_POST['emailForgot'];
+  while ($row){
+  if($row['fullname'] == $emailForgot){
+
   $_SESSION['emailChangePass'] = $emailForgot;
   $random = strval(rand(0001, 9999));
   $_SESSION['codeForgotPass'] = $random;
-
-  $query = "SELECT * FROM customer WHERE email = '$emailForgot'";
-  $resultGetEmail = mysqli_query($conn, $query);
-  $row = mysqli_fetch_assoc($resultGetEmail);
   $fullname = $row['fullname'];
-
-
   $session_expiration = 180;
   if (isset($_SESSION['codeForgotPass']) && (time() - $_SESSION['codeForgotPass'] > $session_expiration)) {
     unset($_SESSION['user']);
   }
-
   $resetLink = "http://localhost/Code/auth/change_pass.php?code=$random";
-
   $subject = "$random là mã khôi phục tài khoản của bạn";
   $message = ' <div style="width: 500px">
     <span
@@ -198,8 +198,12 @@ if (isset($_POST['submit'])) {
   </div>';
   $customer = "";  // Đặt giá trị customer tương ứng
   header('Location: recover_code.php');
-
   send_email($emailForgot, $subject, $message, $customer);
+} else {
+  $resultEmail = "border-danger";
+  $textWarning = '<span class="text-danger">Email không tồn tại</span>';
+}
+}
 }
 ?>
 
@@ -208,12 +212,14 @@ if (isset($_POST['submit'])) {
 
 <head>
 <meta charset="UTF-8">
+    <link rel="shortcut icon" href="../img/favicon/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://kit.fontawesome.com/59847bd5e5.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="../img/favicon/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="../css/auth.css">
-  <title>Document</title>
+  <title>Đặt lại mật khẩu</title>
   <style>
     .form-outline input {
       border: 1px solid #ced4da !important;
@@ -318,7 +324,8 @@ if (isset($_POST['submit'])) {
                 <div class=" mb-4">
                   <div class="">
                     <div class="d-flex justify-content-between"><label class="form-label text-dark m-0 mb-2" for="form3Example2">Vui lòng nhập email để tìm kiếm tài khoản của bạn. </label><?php   ?></div>
-                    <input name="emailForgot" type="text" id="form3Example2" placeholder="Email" class="<?php echo $resultUser ?> form-control" />
+                    <?php echo $textWarning ?>
+                    <input name="emailForgot" type="text" id="form3Example2" placeholder="Email" class="<?php echo $resultEmail ?> form-control" />
                   </div>
                 </div>
 

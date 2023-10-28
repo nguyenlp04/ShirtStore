@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    .eb-estimate-shipping-container {
+      align-items: center;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      position: relative;
+      width: 100%;
+    }
+
+    .eb-estimate-shipping-container>img {
+      margin-right: 10px;
+      max-width: 28px;
+      min-width: 28px;
+    }
+
+    .eb-estimate-shipping-title {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .eb-estimate-shipping-title span:nth-child(2) {
+      border-bottom: 1px dashed;
+      color: #444;
+      font-weight: 700;
+      position: relative;
+      width: fit-content;
+    }
+
+    .eb-estimate-shipping-popup {
+      position: absolute;
+      top: 110%;
+      width: 100%;
+      z-index: 99;
+    }
+
+    .eb-estimate-shipping-popup-wrapper {
+      left: 0;
+      position: absolute;
+      top: 110%;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 7px 29px 0 hsla(240, 5%, 41%, .2);
+      padding: 20px 20px 1px 20px;
+    }
+
+    .eb-estimate-shipping-popup-wrapper ul {
+      font-size: 15px;
+      line-height: 24px;
+      margin: 15px 0px 20px;
+      padding: 0px 0px 0px 40px;
+    }
+
+    .eb-estimate-shipping-description {
+      font-size: 15px;
+      width: 95%;
+    }
+
+    .eb-estimate-shipping-popup-wrapper>.eb-estimate-shipping-stepper {
+      display: flex;
+      left: 3%;
+      position: relative;
+    }
+
+    .eb-stepper-item:not(:last-child) {
+      flex: 1;
+      position: relative;
+    }
+
+    .eb-stepper-item .eb-stepper-item-label {
+      align-items: center;
+      background: #ccc;
+      border-radius: 50%;
+      display: flex;
+      height: 30px;
+      justify-content: center;
+      margin-bottom: 6px;
+      position: relative;
+      width: 30px;
+      z-index: 5;
+    }
+
+    .eb-stepper-item-content {
+      font-weight: 600 !important;
+      font-size: 13px !important;
+    }
+
+    .eb-stepper-item:last-child .eb-stepper-item-content {
+      position: relative;
+      right: 65%;
+    }
+
+    .eb-stepper-item:nth-child(2) {
+      text-align: center;
+    }
+
+    .eb-stepper-item:nth-child(2) .eb-stepper-item-content {
+      position: relative;
+      right: 40%;
+    }
+
+    .eb-stepper-item-content-text {
+      border-bottom: 1px dashed;
+      display: inline;
+    }
+
+    .eb-stepper-item:not(:last-child):after {
+      border-bottom: 2px solid #ccc;
+      content: "";
+      left: 10px;
+      position: absolute;
+      top: 15px;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .eb-stepper-item:not(:last-child) {
+      flex: 1;
+      position: relative;
+    }
+
+    .eb-stepper-item:last-child {
+      text-align: right;
+    }
+
+    .eb-estimate-shipping-popup-wrapper>.eb-estimate-shipping-stepper {
+      display: flex;
+      left: 3%;
+      position: relative;
+    }
+
+    .eb-open {
+      opacity: 1 !important;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="eb-estimate-shipping-container" style="--x: 208px; display: flex">
+    <img src="https://cdn.shopify.com/s/files/1/2418/2505/files/shipping-icon-2.png?v=1695214987" />
+    <div class="eb-estimate-shipping-title">
+      <span>Order today and get it by: </span><span class="showShipping"></span>
+    </div>
+    <div class="eb-estimate-shipping-popup-wrapper" style="display:none; ">
+      <!-- <div class="eb-estimate-shipping-close">x</div> -->
+      <div class="eb-estimate-shipping-stepper">
+        <div class="eb-stepper-item">
+          <div class="eb-stepper-item-label">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <path fill="#000"
+                d="M23 17C23 20.31 20.31 23 17 23V21.5C19.5 21.5 21.5 19.5 21.5 17H23M1 7C1 3.69 3.69 1 7 1V2.5C4.5 2.5 2.5 4.5 2.5 7H1M8 4.32L3.41 8.92C.19 12.14 .19 17.37 3.41 20.59S11.86 23.81 15.08 20.59L22.15 13.5C22.64 13.03 22.64 12.24 22.15 11.75C21.66 11.26 20.87 11.26 20.38 11.75L15.96 16.17L15.25 15.46L21.79 8.92C22.28 8.43 22.28 7.64 21.79 7.15S20.5 6.66 20 7.15L14.19 13L13.5 12.27L20.37 5.38C20.86 4.89 20.86 4.1 20.37 3.61S19.09 3.12 18.6 3.61L11.71 10.5L11 9.8L16.5 4.32C17 3.83 17 3.04 16.5 2.55S15.22 2.06 14.73 2.55L7.11 10.17C8.33 11.74 8.22 14 6.78 15.45L6.07 14.74C7.24 13.57 7.24 11.67 6.07 10.5L5.72 10.15L9.79 6.08C10.28 5.59 10.28 4.8 9.79 4.31C9.29 3.83 8.5 3.83 8 4.32Z">
+              </path>
+            </svg>
+          </div>
+          <div class="eb-stepper-item-content">
+            <div class="eb-stepper-item-content-day">Oct 26</div>
+            <div class="eb-stepper-item-content-text">Order placed</div>
+          </div>
+        </div>
+        <div class="eb-stepper-item">
+          <div class="eb-stepper-item-label">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <path fill="#000"
+                d="M3,13.5L2.25,12H7.5L6.9,10.5H2L1.25,9H9.05L8.45,7.5H1.11L0.25,6H4A2,2 0 0,1 6,4H18V8H21L24,12V17H22A3,3 0 0,1 19,20A3,3 0 0,1 16,17H12A3,3 0 0,1 9,20A3,3 0 0,1 6,17H4V13.5H3M19,18.5A1.5,1.5 0 0,0 20.5,17A1.5,1.5 0 0,0 19,15.5A1.5,1.5 0 0,0 17.5,17A1.5,1.5 0 0,0 19,18.5M20.5,9.5H18V12H22.46L20.5,9.5M9,18.5A1.5,1.5 0 0,0 10.5,17A1.5,1.5 0 0,0 9,15.5A1.5,1.5 0 0,0 7.5,17A1.5,1.5 0 0,0 9,18.5Z">
+              </path>
+            </svg>
+          </div>
+          <div class="eb-stepper-item-content">
+            <div class="eb-stepper-item-content-day">Oct 30 - 31</div>
+            <div class="eb-stepper-item-content-text">Order ship</div>
+          </div>
+        </div>
+        <div class="eb-stepper-item">
+          <div class="eb-stepper-item-label">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <path fill="#000"
+                d="M9.06,1.93C7.17,1.92 5.33,3.74 6.17,6H3A2,2 0 0,0 1,8V10A1,1 0 0,0 2,11H11V8H13V11H22A1,1 0 0,0 23,10V8A2,2 0 0,0 21,6H17.83C19,2.73 14.6,0.42 12.57,3.24L12,4L11.43,3.22C10.8,2.33 9.93,1.94 9.06,1.93M9,4C9.89,4 10.34,5.08 9.71,5.71C9.08,6.34 8,5.89 8,5A1,1 0 0,1 9,4M15,4C15.89,4 16.34,5.08 15.71,5.71C15.08,6.34 14,5.89 14,5A1,1 0 0,1 15,4M2,12V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V12H13V20H11V12H2Z">
+              </path>
+            </svg>
+          </div>
+          <div class="eb-stepper-item-content">
+            <div class="eb-stepper-item-content-day">Nov 9 - 16</div>
+            <div class="eb-stepper-item-content-text">Delivered!</div>
+          </div>
+        </div>
+      </div>
+      <div class="eb-estimate-shipping-description">
+        <ul>
+          <li>
+            Orders can be cancelled or modified within 2 hours after being
+            placed.
+          </li>
+          <li>
+            The above time frame is applied with standard shipping methods.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+  const estimateShippingContainer = document.querySelector(".eb-estimate-shipping-container");
+  const estimateShippingPopup = document.querySelector(".eb-estimate-shipping-popup-wrapper");
+  estimateShippingContainer.addEventListener("mouseover", function () {
+    estimateShippingPopup.style.display = "block";
+  });
+  estimateShippingContainer.addEventListener("mouseout", function () {
+    estimateShippingPopup.style.display = "none";
+  });
+  const orderPlacedSpan = estimateShippingPopup.querySelectorAll(".eb-stepper-item-content-day")[0];
+  const orderShippedSpan = estimateShippingPopup.querySelectorAll(".eb-stepper-item-content-day")[1];
+  const deliveredSpan = estimateShippingPopup.querySelectorAll(".eb-stepper-item-content-day")[2];
+  const showShipping = document.querySelector(".showShipping");
+  const today = new Date();
+  const orderPlacedDate = new Date(today);
+  const orderShippedDate = new Date(today);
+  orderShippedDate.setDate(orderShippedDate.getDate() + 5); // Add 5 days
+  const deliveredDate = new Date(today);
+  deliveredDate.setDate(deliveredDate.getDate() + 9); // Add 9 days
+  function formatDate(date) {
+    const options = { month: 'short', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
+  function addDays(date, days) {
+    const result = new Date(date);
+    result.setDate(date.getDate() + days);
+    return result;
+  }
+  showShipping.textContent = formatDate(deliveredDate) + " - " + formatDate(addDays(deliveredDate, 15)); // Add 15 days
+  orderPlacedSpan.textContent = formatDate(orderPlacedDate);
+  orderShippedSpan.textContent = formatDate(orderShippedDate) + " - " + formatDate(addDays(orderShippedDate, 1)); // Add 1 day
+  deliveredSpan.textContent = formatDate(deliveredDate) + " - " + formatDate(addDays(deliveredDate, 7)); // Add 7 days
+});
+  </script>
+</body>
+</html>

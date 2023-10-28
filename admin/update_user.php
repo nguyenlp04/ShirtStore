@@ -1,5 +1,5 @@
 <?php
-include '../classes/classes.php';
+include '../models/classes.php';
  include "../layout.php";
 if(!isset($_SESSION['admin']) || $_SESSION['vai_tro'] === "user"){
     header("Location: ../index.php");
@@ -18,8 +18,6 @@ if (isset($_POST['submit'])) {
     $change = new  UpdateHandler(); 
     $updateUser = $change->updateUser();  
 }
-
-
 if (isset($_GET['id_customer'])) {
     $name_table = "customer";
     $col_name = "id_customer";

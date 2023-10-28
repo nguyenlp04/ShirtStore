@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../config/config.php';
+include '../models/function.php';
 include "../layout.php";
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -49,8 +50,20 @@ $formatted_payment_date = $row_total_revenue_month['formatted_payment_date'];
 $total_revenue_month_formatted = number_format($total_revenue_month, 2);
 
 
+$t_shirt = getQuantityCategory(13);
+$hoodie = getQuantityCategory(14);
+$graphic_tee = getQuantityCategory(15);
 
-
+$sqlCategory = "SELECT COUNT(*) AS product_count
+    FROM products";
+$result = $conn->query($sqlCategory);
+if ($result) {
+    $row = $result->fetch_assoc();
+    $allCategory = $row["product_count"];
+} else {
+    $allCategory = 0; // Đặt allCategory thành 0 nếu có lỗi
+}
+$remaining = $allCategory - ($t_shirt + $hoodie + $graphic_tee);
 
 
 
@@ -170,7 +183,7 @@ $total_revenue_month_formatted = number_format($total_revenue_month, 2);
                     data: {
                         labels: ["T-Shirt", "Hoode", "Graphic", "Khác"],
                         datasets: [{
-                            data: [50, 40, 30, 20],
+                            data: [<?php echo $t_shirt; ?>, <?php echo $hoodie; ?>, <?php echo $graphic_tee; ?>,<?php echo $remaining; ?> ],
                             backgroundColor: ["#0d6efd", "#dc3545", "#f0ad4e", "#6610f2"],
                             hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
                                 "rgba(255, 195, 15, 0.3)"
