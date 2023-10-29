@@ -10,7 +10,9 @@ if (isset($_SESSION['getAvatarUser'])) {
 } else {
     $avatar = '/user.png';
 }
-$id_customer = $_SESSION['id_customer'];
+if(isset($_SESSION['id_customer'])){
+    $id_customer = $_SESSION['id_customer'];
+    }
 $id_product = $_GET['product_detail'];
 if (isset($_GET['product_detail'])) {
     $id_product = $_GET['product_detail'];
