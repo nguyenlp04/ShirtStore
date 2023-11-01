@@ -47,6 +47,11 @@ $result_total_revenue_month = $conn->query($sql_total_revenue_month);
 $row_total_revenue_month = $result_total_revenue_month->fetch_assoc();
 $total_revenue_month = $row_total_revenue_month['total_revenues'];
 $formatted_payment_date = $row_total_revenue_month['formatted_payment_date'];
+if($total_revenue_month != null){
+    $total_revenue_month = $total_revenue_month;
+} else {
+    $total_revenue_month = 0;
+}
 $total_revenue_month_formatted = number_format($total_revenue_month, 2);
 
 
